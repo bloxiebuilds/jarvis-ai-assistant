@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarvis AI Assistant</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+        .container {
+            background-color: #16213e;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            z-index: 1;
+        }
+        h1 {
+            color: #00ffff;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-shadow: 0 0 10px #00ffff;
+        }
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .mic-button {
+            background-color: #00ffff;
+            color: #1a1a2e;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+        }
+        .mic-button:hover {
+            background-color: #00e6e6;
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.9);
+            transform: translateY(-3px);
+        }
+        .response-area {
+            margin-top: 30px;
+            background-color: #0f3460;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #00ffff;
+            min-height: 80px;
+            text-align: left;
+            font-style: italic;
+        }
+        .background-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(0, 255, 255, 0.1) 0%, rgba(0, 255, 255, 0) 70%);
+            animation: pulse 10s infinite alternate;
+            z-index: 0;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(1.2); opacity: 0.7; }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-effect"></div>
+    <div class="container">
+        <h1>Jarvis AI Assistant</h1>
+        <p>Your personal AI companion, ready to assist with PC automation and more.</p>
+        <button class="mic-button">Speak to Jarvis</button>
+        <div class="response-area">
+            <p>Jarvis: Awaiting your command, sir.</p>
+            <!-- ElevenLabs conversational widget would be embedded here -->
+        </div>
+    </div>
+</body>
+</html>

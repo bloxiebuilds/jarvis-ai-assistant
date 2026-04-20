@@ -1,0 +1,15 @@
+{
+  "mode_name": "Example Mode",
+  "actions": [
+    {
+      "type": "open_application",
+      "application": "Application Name",
+      "args": []
+    },
+    {
+      "type": "run_script",
+      "script_path": "/path/to/your/script.py",
+      "args": ["arg1", "arg2"]
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "id": "1",
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "model": "GPT4o",
+        "systemPrompt": "You are Jarvis, a helpful AI assistant. Respond concisely and efficiently.",
+        "tools": [
+          {
+            "name": "open_application",
+            "description": "Opens a specified application on the user's PC.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "application_name": {
+                  "type": "string",
+                  "description": "The name of the application to open (e.g., Steam, OBS, Chrome)."
+                }
+              },
+              "required": ["application_name"]
+            }
+          }
+        ]
+      },
+      "name": "AI Agent",
+      "type": "n8n-nodes-base.aiAgent",
+      "typeVersion": 1,
+      "id": "2",
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "command": "={{ $json.application_name === 'Steam' ? 'start steam://open/main' : ($json.application_name === 'OBS' ? 'start obs64.exe' : 'start chrome') }}",
+        "executeIn": "shell"
+      },
+      "name": "Execute Command",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "id": "3",
+      "position": [750, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "output": [
+        {
+          "node": "AI Agent",
+          "type": "main",
+          "index": 0
+        }
+      ]
+    },
+    "AI Agent": {
+      "output": [
+        {
+          "node": "Execute Command",
+          "type": "main",
+          "index": 0
+        }
+      ]
+    }
+  }
+}
