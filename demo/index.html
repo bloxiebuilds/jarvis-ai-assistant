@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarvis AI Assistant - Demonstration</title>
+    <style>
+        :root {
+            --primary-color: #00ffff;
+            --bg-color: #0a0a1a;
+            --panel-bg: #16213e;
+            --text-color: #e0e0e0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        header {
+            width: 100%;
+            background-color: var(--panel-bg);
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 255, 255, 0.2);
+            border-bottom: 1px solid var(--primary-color);
+        }
+        h1 {
+            color: var(--primary-color);
+            margin: 0;
+            text-shadow: 0 0 10px var(--primary-color);
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1200px;
+            padding: 40px 20px;
+            width: 100%;
+        }
+        .panel {
+            background-color: var(--panel-bg);
+            border-radius: 10px;
+            padding: 30px;
+            flex: 1;
+            min-width: 300px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 255, 255, 0.1);
+        }
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        .demo-interface {
+            text-align: center;
+            padding: 20px;
+            border: 2px dashed var(--primary-color);
+            border-radius: 10px;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .mic-btn {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+        }
+        .mic-btn:hover {
+            background-color: rgba(0, 255, 255, 0.1);
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+        .mic-btn.listening {
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+            animation: pulse 1.5s infinite;
+        }
+        .status-text {
+            font-style: italic;
+            color: #aaa;
+            min-height: 24px;
+        }
+        .log-window {
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 15px;
+            border-radius: 5px;
+            height: 200px;
+            overflow-y: auto;
+            margin-top: 20px;
+            border: 1px solid #333;
+            text-align: left;
+            font-size: 14px;
+        }
+        .log-entry {
+            margin-bottom: 5px;
+            border-bottom: 1px solid #111;
+            padding-bottom: 5px;
+        }
+        .command-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .command-list li {
+            background-color: rgba(0, 255, 255, 0.05);
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            border-left: 3px solid var(--primary-color);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .command-list li:hover {
+            background-color: rgba(0, 255, 255, 0.15);
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.7); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(0, 255, 255, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 255, 255, 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Jarvis AI Assistant</h1>
+        <p>Interactive Demonstration</p>
+    </header>
+
+    <div class="container">
+        <div class="panel">
+            <h2>How to Use</h2>
+            <p>This page simulates the experience of using the Jarvis AI Assistant. In a real setup, the microphone button would connect to ElevenLabs for voice processing, which would then trigger local PC commands via n8n.</p>
+            
+            <h3>Try it out:</h3>
+            <p>Click the microphone button or select a command from the list below to see how the system processes requests.</p>
+            
+            <ul class="command-list">
+                <li onclick="simulateCommand('Jarvis, open Steam.')">"Jarvis, open Steam."</li>
+                <li onclick="simulateCommand('I need to stream, launch OBS.')">"I need to stream, launch OBS."</li>
+                <li onclick="simulateCommand('Open my browser.')">"Open my browser."</li>
+                <li onclick="simulateCommand('Activate Gaming Mode.')">"Activate Gaming Mode."</li>
+            </ul>
+        </div>
+
+        <div class="panel">
+            <h2>Interactive Demo</h2>
+            <div class="demo-interface">
+                <button class="mic-btn" id="micBtn" onclick="toggleListening()">🎤</button>
+                <div class="status-text" id="statusText">Click the microphone to start</div>
+                
+                <div class="log-window" id="logWindow">
+                    <div class="log-entry">> System initialized. Waiting for input...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const micBtn = document.getElementById('micBtn');
+        const statusText = document.getElementById('statusText');
+        const logWindow = document.getElementById('logWindow');
+        let isListening = false;
+
+        function addLog(message, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            
+            const time = new Date().toLocaleTimeString();
+            let color = '#0f0'; // default green
+            if (type === 'user') color = '#0ff'; // cyan for user input
+            if (type === 'jarvis') color = '#f0f'; // magenta for jarvis response
+            if (type === 'system') color = '#ff0'; // yellow for system actions
+            
+            entry.innerHTML = `<span style="color: #888">[${time}]</span> <span style="color: ${color}">${message}</span>`;
+            logWindow.appendChild(entry);
+            logWindow.scrollTop = logWindow.scrollHeight;
+        }
+
+        function toggleListening() {
+            if (isListening) {
+                stopListening();
+            } else {
+                startListening();
+            }
+        }
+
+        function startListening() {
+            isListening = true;
+            micBtn.classList.add('listening');
+            statusText.innerText = "Listening... (Speak now)";
+            addLog("Microphone activated. Awaiting voice input...", "system");
+            
+            // Simulate user speaking after a short delay
+            setTimeout(() => {
+                if(isListening) {
+                    simulateCommand("Jarvis, open Steam.");
+                }
+            }, 3000);
+        }
+
+        function stopListening() {
+            isListening = false;
+            micBtn.classList.remove('listening');
+            statusText.innerText = "Click the microphone to start";
+        }
+
+        function simulateCommand(command) {
+            stopListening();
+            statusText.innerText = "Processing command...";
+            addLog(`User: "${command}"`, "user");
+            
+            setTimeout(() => {
+                addLog("ElevenLabs: Intent recognized. Triggering n8n webhook...", "system");
+                
+                setTimeout(() => {
+                    let appName = "Unknown";
+                    let response = "I'm sorry, I didn't catch that.";
+                    
+                    if (command.toLowerCase().includes("steam")) {
+                        appName = "Steam";
+                        response = "Right away, sir. Launching Steam.";
+                    } else if (command.toLowerCase().includes("obs")) {
+                        appName = "OBS Studio";
+                        response = "Preparing your streaming environment. Opening OBS.";
+                    } else if (command.toLowerCase().includes("browser")) {
+                        appName = "Google Chrome";
+                        response = "Opening your web browser.";
+                    } else if (command.toLowerCase().includes("gaming mode")) {
+                        appName = "Steam & OBS";
+                        response = "Activating Gaming Mode. Preparing all necessary applications.";
+                    }
+
+                    addLog(`n8n: Received payload. Executing local command for: ${appName}`, "system");
+                    addLog(`Jarvis: "${response}"`, "jarvis");
+                    statusText.innerText = "Command executed.";
+                    
+                    setTimeout(() => {
+                        statusText.innerText = "Click the microphone to start";
+                    }, 2000);
+
+                }, 1500);
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
