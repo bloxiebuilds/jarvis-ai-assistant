@@ -1,2 +1,3 @@
 # Jarvis AI Assistant
 Please see the MD file inside the documentation folder for more information.
+Instructions may be confusing.
